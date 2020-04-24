@@ -1,7 +1,6 @@
 PROJ_PATH=workspace/projects/detectron2
 
 define clean_repo
-	git rm -r --cached .
 	find '.' -name '*pyc' -exec rm -r {} +
 	find '.' -name '*DS_Store' -exec rm -r {} +
 	find '.' -name '*__pycache__' -exec rm -r {} +
@@ -24,3 +23,4 @@ local:
 all: k2 local
 
 fetch_local:
+	rsync -av quang@local:~/$(PROJ_PATH)/ ~/$(PROJ_PATH)/

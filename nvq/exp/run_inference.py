@@ -21,9 +21,11 @@ import matplotlib.pyplot as plt
 
 
 # Load image
+import os
+os.system("wget http://images.cocodataset.org/val2017/000000439715.jpg -O input.jpg")
 im = cv2.imread("input.jpg")
-plt.imshow(im)
-plt.show();
+# plt.imshow(im)
+# plt.show();
 
 # create config and predictor
 cfg = get_cfg()
@@ -54,5 +56,7 @@ outputs["instances"].pred_boxes
 # We can use `Visualizer` to draw the predictions on the image.
 v = Visualizer(im[:, :, ::-1], MetadataCatalog.get(cfg.DATASETS.TRAIN[0]), scale=1.2)
 v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-plt.imshow(v.get_image()[:, :, ::-1])
-plt.show();
+cv2.imwrite('input_mask.jpg', v.get_image())
+
+# plt.imshow(v.get_image()[:, :, ::-1])
+# plt.show();

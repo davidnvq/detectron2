@@ -64,13 +64,13 @@ def get_balloon_dicts(img_dir):
 
 for d in ["train", "val"]:
     DatasetCatalog.register("balloon_" + d, 
-                            lambda d=d: get_balloon_dicts("balloon/" + d))
+                            lambda d=d: get_balloon_dicts("/home/quang/datasets/detectron2/balloon/" + d))
     MetadataCatalog.get("balloon_" + d).set(thing_classes=["balloon"])
 balloon_metadata = MetadataCatalog.get("balloon_train")
 
 
 # Verify the data loading is correct
-dataset_dicts = get_balloon_dicts("balloon/train")
+dataset_dicts = get_balloon_dicts("/home/quang/datasets/detectron2/balloon/train")
 for d in random.sample(dataset_dicts, 3):
     img = cv2.imread(d["file_name"])
     visualizer = Visualizer(img[:, :, ::-1], 
@@ -93,6 +93,7 @@ cfg.DATASETS.TRAIN = ("balloon_train",)
 cfg.DATASETS.TEST = ()
 cfg.DATALOADER.NUM_WORKERS = 2
 
+cfg.OUTPUT_DIR = "/home/quang/results/detectron2/output/"
 # Let training initialize from model zoo
 cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(
     "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml") 
@@ -123,7 +124,8 @@ from detectron2.data import build_detection_test_loader
 cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7   
 cfg.DATASETS.TEST = ("balloon_val", )
 
-evaluator = COCOEvaluator("balloon_val", cfg, False, output_dir="./output/")
+# Should get around 82% acc of segm
+evaluator = COCOEvaluator("balloon_val", cfg, False, output_dir=cfg.OUTPUT_DIR)
 
 val_loader = build_detection_test_loader(cfg, "balloon_val")
 inference_on_dataset(trainer.model, val_loader, evaluator)

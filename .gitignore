@@ -3,10 +3,7 @@ output
 instant_test_output
 inference_test_output
 
-# tensorboard output
-events.out*
 
-!input.jpg
 *.jpg
 *.png
 *.txt
@@ -29,6 +26,7 @@ wheels/
 *.npy
 
 # ipython/jupyter notebooks
+*.ipynb
 **/.ipynb_checkpoints/
 
 # Editor temporaries
@@ -42,10 +40,7 @@ wheels/
 .vscode
 
 # project dirs
-#/detectron2/model_zoo/configs
-#/datasets
-#/projects/*/datasets
-#/models
-
-# os system
-*DS_Store
+/detectron2/model_zoo/configs
+/datasets
+/projects/*/datasets
+/models
